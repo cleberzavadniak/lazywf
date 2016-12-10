@@ -1,0 +1,21 @@
+machine:
+  python:
+    version: 3.5.1
+
+dependencies:
+  pre:
+    - pip install -v -U flake8
+    - pip install -v -r requirements/tests.txt
+
+test:
+  pre:
+    - flake8 --ignore=E501 lazywf
+
+  override:
+    - py.test -vvv
+
+experimental:
+    notify:
+        branches:
+            only:
+                - master
