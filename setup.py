@@ -17,7 +17,7 @@ with codecs.open(changes, encoding='utf-8') as changes:
             break
 
 # Get the long description
-with codecs.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
+with codecs.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 # Get version
