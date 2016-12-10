@@ -1,0 +1,22 @@
+products:
+    constraints:
+        keys: [sku]
+        unique: [sku]
+    validations:
+        sku:
+            type: string
+            required: true
+            minlength: 16
+            maxlength: 18
+        name:
+            type: string
+            required: true
+            maxlength: 64
+        price:
+            type: float
+            required: true
+        old_price:
+            type: float
+            required: false
+            nullable: true
+            default: null
