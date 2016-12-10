@@ -2,6 +2,8 @@
 
 The laziest web framework ever.
 
+[![CircleCI](https://circleci.com/gh/cleberzavadniak/lazywf/tree/master.svg?style=svg)](https://circleci.com/gh/cleberzavadniak/lazywf/tree/master)
+
 ## Why I started this project
 
 I really enjoy working with **Django**. It's a very nice
