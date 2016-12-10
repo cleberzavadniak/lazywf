@@ -1,2 +1,3 @@
--r requirements/production.txt
+-r production.txt
 pytest
+flake8

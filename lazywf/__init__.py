@@ -15,18 +15,21 @@ def json_operation(f):
 
 class TheLaziestWebFrameworkEVER:
     def __init__(self):
-        # Database:
-        self.db = dataset.connect()
-
-        # Models:
-        with open('models.yaml') as models_file:
-            self.models = yaml.load(models_file)
-
         # Bottle app:
         self.app = bottle.Bottle()
 
+        self.load_models()
+        self.db_connect()
+
         self.create_internal_routes()
         self.create_routes()
+
+    def load_models(self):
+        with open('models.yaml') as models_file:
+            self.models = yaml.load(models_file)
+
+    def db_connect(self):
+        self.db = dataset.connect()
 
     def add_route(self, path, method, callback, **kwargs):
         return self.app.route(path, method, callback=callback, **kwargs)
