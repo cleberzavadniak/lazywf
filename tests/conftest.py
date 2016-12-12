@@ -11,6 +11,7 @@ def server():
             self.models = {}
 
         def db_connect(self):
-            pass
+            self.DATABASE_URL = 'sqlite:///:memory:'
+            super().db_connect()
 
     return MyTestServer()

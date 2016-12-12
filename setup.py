@@ -50,6 +50,7 @@ setup(
     url='https://github.com/cleberzavadniak/lazywf',
     author='Cléber Zavadniak',
     author_email='cleberman@gmail.com',
+    license='MIT',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
