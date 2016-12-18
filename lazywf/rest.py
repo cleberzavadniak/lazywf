@@ -13,26 +13,31 @@ def json_operation(f):
 
 
 class RestOperationsManager:
-    def __init__(self, lazy_server):
+    def __init__(self, lazy_server, db_manager):
         self.lazy_server = lazy_server
         self.models = lazy_server.models
-        self.db = lazy_server.db
+        self.db_manager = db_manager
+        self.db = db_manager.db
 
         self.create_routes()
 
     def create_routes(self):
-        self.lazy_server.add_route('/api/<model_name>/', 'POST', callback=self.create)
-        self.lazy_server.add_route('/api/<model_name>/<key>/', 'PATCH', callback=self.update)
-        self.lazy_server.add_route('/api/<model_name>/<key>/', 'GET', callback=self.retrieve)
-        self.lazy_server.add_route('/api/<model_name>/', 'GET', callback=self.list)
+        routes = (
+            ('/api/<model_name>/', 'POST', self.create),
+            ('/api/<model_name>/<key>/', 'PATCH', self.update),
+            ('/api/<model_name>/<key>/', 'GET', self.retrieve),
+            ('/api/<model_name>/', 'GET', self.list),
+        )
+        for path, method, callback in routes:
+            self.lazy_server.add_route(path, method, callback)
 
     def validate_model(self, *args):
         return self.lazy_server.validate_model(*args)
 
-    @staticmethod
-    def get_parameters_for_search(model, keys):
-        key_fields = model['constraints']['keys']
+    def get_parameters_for_search(self, model, keys):
         search_by = {}
+
+        key_fields = model['constraints']['keys']
         key_index = 0
         for field_name in key_fields:
             search_by[field_name] = keys[key_index]
