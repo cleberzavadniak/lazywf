@@ -55,8 +55,8 @@ class RestOperationsManager:
             if table.find_one(**search_by):
                 return bottle.HTTPResponse(status=400, body={'constraints': 'These fields must be unique: {}'.format(keys)})
 
-        data['created_at'] = datetime.datetime.now()
-        data['updated_at'] = datetime.datetime.now()
+        data['created_at'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        data['updated_at'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         table.insert(data)
         return bottle.HTTPResponse(status=201, body=data)
@@ -82,7 +82,7 @@ class RestOperationsManager:
             return bottle.HTTPResponse(status=404, body={'constraints': 'Not found: {}'.format(search_by)})
 
         data.update(search_by)
-        data['updated_at'] = datetime.datetime.now()
+        data['updated_at'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         self.update_table(model, table, data)
         entry = table.find_one(**search_by)  # XXX: is there a "refresh_from_db", maybe?

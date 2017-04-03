@@ -24,8 +24,10 @@ class TheLaziestWebFrameworkEVER:
 
         self.create_internal_routes()
         self.create_routes()
+        self.load_rest_manager()
 
-        self.rest_manager = RestOperationsManager(self)
+    def load_rest_manager(self):
+            self.rest_manager = RestOperationsManager(self)
 
     # ---------------------------------------
     # Models and Database:
@@ -48,6 +50,7 @@ class TheLaziestWebFrameworkEVER:
 
     # -------------------
     def add_route(self, path, method, callback, **kwargs):
+        self.logger.info('add_route: {} {}'.format(method, path))
         return self.app.route(path, method, callback=callback, **kwargs)
 
     def create_routes(self):

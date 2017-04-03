@@ -1,4 +1,4 @@
-#lazywf
+# lazywf
 
 The laziest web framework ever.
 
