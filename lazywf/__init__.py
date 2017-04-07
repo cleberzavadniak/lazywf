@@ -61,6 +61,9 @@ class TheLaziestWebFrameworkEVER:
         self.add_route('/static/<filename>', 'GET', callback=self.serve_static)
 
     def validate_model(self, name, data, update=False):
+        if not data:
+            return False, {"__all__": "No document provided."}
+
         schema = self.models[name]['validations']
         v = Validator(schema)
         return v.validate(data, update=update), v.errors
