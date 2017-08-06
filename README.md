@@ -4,16 +4,90 @@ The laziest web framework ever.
 
 [![CircleCI](https://circleci.com/gh/cleberzavadniak/lazywf/tree/master.svg?style=svg)](https://circleci.com/gh/cleberzavadniak/lazywf/tree/master)
 
+## How to use
+
+1- In your project root, create a `server.py` script this
+way:
+
+```python
+#!env python3
+
+from lazywf import TheLaziestWebFrameworkEVER
+
+
+class Lazy(TheLaziestWebFrameworkEVER):
+    pass
+
+Lazy().run()
+```
+
+
+2- Then, create a `models.yaml` like this:
+
+```yaml
+products:  # Your model name
+    constraints:  # Some constrains you'd like to enforce
+        keys: [sku]
+        unique: [sku]
+    validations:  # Describe some validations for your data
+        sku:
+            type: string
+            required: true
+            minlength: 16
+            maxlength: 18
+        name:
+            type: string
+            required: true
+            maxlength: 64
+        price:
+            type: float
+            required: true
+        old_price:
+            type: float
+            required: false
+            nullable: true
+            default: null
+```
+
+Data validation is done using the excelent
+[Cerberus](https://github.com/pyeve/cerberus)
+project.
+
+3- Export your `DATABASE_URL` environment variable:
+
+```bash
+$ export DATABASE_URL="sqlite:///database.sqlite"
+```
+
+4- Now you can run your server:
+
+```bash
+$ python3 server.py
+```
+
+5- Test it using
+[httpie](https://github.com/jakubroztocil/httpie):
+
+```bash
+$ http --json POST "http://localhost:8080/api/products/" sku=12345678901234567 name=TestProduct price:=19.90
+$ http "http://localhost:8080/api/products/"
+$ http --json PATCH "http://localhost:8080/api/products/12345678901234567" old_price:=19.90 price:=29.90
+$ http "http://localhost:8080/api/products/"
+$ http DELETE "http://localhost:8080/api/products/1"
+$ http "http://localhost:8080/api/products/"
+```
+
+
 ## Why I started this project
 
 I really enjoy working with **Django**. It's a very nice
 framework if you want to do some serious business without
 worrying too much about little details that won't help you
 at all to make your deliveries in time. It's opinionated
-and I think it's good. Except when I don't want to do
+and I think it's good -- except when I don't want to do
 anything "serious".
 
-Really, it's too difficult to get a Django project up and
+I think it's too difficult to get a Django project up and
 running. You have to deal with your "settings.py",
 configure where your templates are, enable static files
 serving, write your models upfront, create migrations,
@@ -25,17 +99,18 @@ things happen as you wanted at first.
 
 What was that, again?
 
-Man, I don't have the patience to deal with so much only
-to put into life something very simple I want to play with.
+I don't have the patience to deal with so much work only
+to put into life something very simple I want to **play**
+with.
 
 **I am too lazy!**
 
 ## Django REST -ANYTHING- make everything even worse!
 
 Add to all that the decision to have a REST API. Now I have
-to write serializers or specialized views, too.
+to write **serializers** or specialized views, too.
 
-**Oh, no, God!, no!**
+**Oh, no!**
 
 I can't do that anymore. Really. Maybe when I was 20 years
 old, but not on my age...

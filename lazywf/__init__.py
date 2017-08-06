@@ -1,5 +1,6 @@
 import yaml
 from os import environ
+import sys
 
 import bottle
 from cerberus import Validator
@@ -84,4 +85,9 @@ class TheLaziestWebFrameworkEVER:
 
     # Run the server!!!
     def run(self):
-        return bottle.run(self.app, host='localhost', port=8080, debug_mode=True)
+        try:
+            port = int(sys.argv[1])
+        except (IndexError, ValueError):
+            port = 8080
+
+        return bottle.run(self.app, host='localhost', port=port, debug_mode=True)

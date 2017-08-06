@@ -22,12 +22,13 @@ class RestOperationsManager:
 
     def create_routes(self):
         self.lazy_server.add_route('/api/<model_name>/', 'POST', callback=self.create)
-        self.lazy_server.add_route('/api/<model_name>/<key>/', 'PATCH', callback=self.update)
-        self.lazy_server.add_route('/api/<model_name>/<key>/', 'GET', callback=self.retrieve)
+        self.lazy_server.add_route('/api/<model_name>/<key>', 'PATCH', callback=self.update)
+        self.lazy_server.add_route('/api/<model_name>/<key>', 'GET', callback=self.retrieve)
+        self.lazy_server.add_route('/api/<model_name>/<key>', 'DELETE', callback=self.delete)
         self.lazy_server.add_route('/api/<model_name>/', 'GET', callback=self.list)
 
-    def validate_model(self, *args):
-        return self.lazy_server.validate_model(*args)
+    def validate_model(self, *args, **kwargs):
+        return self.lazy_server.validate_model(*args, **kwargs)
 
     @staticmethod
     def get_parameters_for_search(model, keys):
@@ -99,6 +100,19 @@ class RestOperationsManager:
         if not entry:
             return bottle.HTTPResponse(status=404, body={'constraints': 'Not found: {}'.format(search_by)})
 
+        return bottle.HTTPResponse(status=200, body=entry)
+
+    def delete(self, model_name, key):
+        keys = key.split(',')
+        table = self.db[model_name]
+
+        model = self.models[model_name]
+        search_by = self.get_parameters_for_search(model, keys)
+        entry = table.find_one(**search_by)
+        if not entry:
+            return bottle.HTTPResponse(status=404, body={'constraints': 'Not found: {}'.format(search_by)})
+
+        table.delete(**search_by)
         return bottle.HTTPResponse(status=200, body=entry)
 
     def list(self, model_name):

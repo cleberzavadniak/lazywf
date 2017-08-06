@@ -1,9 +1,9 @@
 #!env python3
 
-from lazywf import TheMostLazyWebFrameworkEVER
+from lazywf import TheLaziestWebFrameworkEVER
 
 
-class Lazy(TheMostLazyWebFrameworkEVER):
+class Lazy(TheLaziestWebFrameworkEVER):
     def create_routes(self):
         self.add_route('/', 'GET', self.index)
 
