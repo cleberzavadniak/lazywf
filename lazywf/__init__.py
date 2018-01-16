@@ -85,9 +85,7 @@ class TheLaziestWebFrameworkEVER:
 
     # Run the server!!!
     def run(self):
-        try:
-            port = int(sys.argv[1])
-        except (IndexError, ValueError):
-            port = 8080
-
-        return bottle.run(self.app, host='localhost', port=port, debug_mode=True)
+        port = int(environ.get('PORT', 8080))
+        host = environ.get('HOST', 'localhost')
+        debug_mode = environ.get('DEBUG', 'True') == 'True'
+        return bottle.run(self.app, host=host, port=port, debug_mode=debug_mode)
