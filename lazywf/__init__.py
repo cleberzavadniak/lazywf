@@ -28,22 +28,31 @@ class TheLaziestWebFrameworkEVER:
         self.load_rest_manager()
 
     def load_rest_manager(self):
+        if self.models:
             self.rest_manager = RestOperationsManager(self)
 
     # ---------------------------------------
     # Models and Database:
     def load_models(self):
+        try:
+            return self.do_load_models()
+        except FileNotFoundError:
+            self.logger.warning('NOT loading models: models.yaml file does not exist.')
+            self.models = None
+            return
+
+    def do_load_models(self):
         with open('models.yaml') as models_file:
             self.models = yaml.load(models_file)
 
     def db_connect(self):
-        if self.DATABASE_URL:
+        if self.DATABASE_URL and self.models:
             self.logger.info('Connecting to database')
             with indent(4):
                 self.db = dataset.connect(self.DATABASE_URL)
                 self.logger.info('Database URL: {}'.format(self.db.url))
         else:
-            self.logger.warning('NOT connecting to database: DATABASE_URL environment variable is not set.')
+            self.logger.warning('NOT connecting to database: DATABASE_URL environment variable is not set or no models definitions available.')
             self.db = None
 
     def get_table(self, table_name):
