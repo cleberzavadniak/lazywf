@@ -1,6 +1,5 @@
 import yaml
 from os import environ
-import sys
 
 import bottle
 from cerberus import Validator
@@ -27,9 +26,27 @@ class TheLaziestWebFrameworkEVER:
         self.create_routes()
         self.load_rest_manager()
 
+        self.enable_cors()
+
     def load_rest_manager(self):
         if self.models:
             self.rest_manager = RestOperationsManager(self)
+
+    def add_cors_headers(self, response=None):
+        response = response or bottle.response
+
+        if self.cors_origins is None:
+            return response
+
+        the_headers = response.headers
+
+        the_headers['Access-Control-Allow-Origin'] = self.cors_origins
+        the_headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
+        the_headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
+    def enable_cors(self):
+        self.cors_origins = environ.get('CORS_ORIGINS', None)
+        self.app.hook('after_request')(self.add_cors_headers)
 
     # ---------------------------------------
     # Models and Database:
@@ -85,7 +102,9 @@ class TheLaziestWebFrameworkEVER:
 
     # Static files:
     def serve_static(self, filename):
-        return bottle.static_file(filename, root='static')
+        response = bottle.static_file(filename, root='static')
+        self.add_cors_headers(response)
+        return response
 
     # REST API:
     # Templates
