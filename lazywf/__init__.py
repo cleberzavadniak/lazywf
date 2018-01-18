@@ -85,7 +85,7 @@ class TheLaziestWebFrameworkEVER:
         pass
 
     def create_internal_routes(self):
-        self.add_route('/static/<filename>', 'GET', callback=self.serve_static)
+        self.add_route('/static/<filename:path>', 'GET', callback=self.serve_static)
 
     def validate_model(self, name, data, update=False):
         if not data:
