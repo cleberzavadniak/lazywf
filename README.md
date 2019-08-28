@@ -6,7 +6,13 @@ The laziest web framework ever.
 
 ## How to use
 
-1- In your project root, create a `server.py` script this
+### requirements.txt
+
+> git+https://github.com/cleberzavadniak/lazywf.git
+
+### server.py
+
+In your project root, create a `server.py` script this
 way:
 
 ```python
@@ -18,11 +24,17 @@ from lazywf import TheLaziestWebFrameworkEVER
 class Lazy(TheLaziestWebFrameworkEVER):
     pass
 
+
 Lazy().run()
 ```
 
+(You can skip this step and simply call `python3 -m lazywf`
+inside your project root directory.)
 
-2- Then, create a `models.yaml` like this:
+
+### models.yaml
+
+Then, create a `models.yaml` in your project directory, like this:
 
 ```yaml
 products:  # Your model name
@@ -53,19 +65,25 @@ Data validation is done using the excelent
 [Cerberus](https://github.com/pyeve/cerberus)
 project.
 
-3- Export your `DATABASE_URL` environment variable:
+### DATABASE_URL
+
+Export your `DATABASE_URL` environment variable:
 
 ```bash
 $ export DATABASE_URL="sqlite:///database.sqlite"
 ```
 
-4- Now you can run your server:
+### run
+
+Now you can run your server:
 
 ```bash
 $ python3 server.py
 ```
 
-5- Test it using
+### Test with httpie
+
+Test it using
 [httpie](https://github.com/jakubroztocil/httpie):
 
 ```bash
