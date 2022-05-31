@@ -1,4 +1,4 @@
-bottle==0.12.10
+bottle==0.12.19
 dataset==0.7.1
 cerberus==1.0.1
 clint==0.5.1
